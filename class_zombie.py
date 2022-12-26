@@ -111,8 +111,8 @@ class Player:
 pygame.init()
 clock = pygame.time.Clock()            
 
-screen_width = 1280
-screen_height = 720
+screen_width = 1800
+screen_height = 1200
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("zombie attack")
             
@@ -128,7 +128,8 @@ class Zombie:
         self.x = random.randint(0,  screen_width - self.taille)
         self.y = random.randint(0,  screen_height - self.taille)
         self.vitesse = 1
-      #  self.couleur = (26, 162, 53)
+        self.vie = 50
+        self.max_vie = 50
         self.deplacement = []
         self.deplacement.append(pygame.image.load('0.png'))
         self.deplacement.append(pygame.image.load('1.png'))
@@ -148,7 +149,7 @@ class Zombie:
         distance_y = target_y - self.y
         distance = (distance_x**2 + distance_y**2)**0.5
         
-        if distance <  450:
+        if distance <  600:
             if self.x <player.rect[0]:
                 self.x += self.vitesse
             if self.x > player.rect[0]:
@@ -160,6 +161,17 @@ class Zombie:
         else:
             self.x = self.x
             self.y = self.y
+            
+    def barre_vie(self):
+        couleur_barre_vie = (255, 0, 0)
+        couleur_fond_barre = (0, 0, 0)
+        
+        barre_position = [self.x + 10, self.y - 10, self.vie, 6]
+        barre_position_fond = [self.x + 10, self.y - 10, self.max_vie, 6]
+        
+        pygame.draw.rect(screen, couleur_fond_barre, barre_position_fond)
+        pygame.draw.rect(screen, couleur_barre_vie, barre_position)
+
             
     def update(self, speed):
         if self.mouvement == True:
@@ -201,11 +213,11 @@ def main_jeux():
                 sys.exit()
                 pygame.quit()
                 
-      
-            
+
         screen.blit(BG, position_BG)
         for zmb in lst_zmb:
             zmb.affichage()
+            zmb.barre_vie()
             zmb.mouvements()
             zmb.mvt(player.rect[0], player.rect[1])
             zmb.update(0.25)
@@ -213,6 +225,7 @@ def main_jeux():
         player.barre_vie()
         player.draw()
         player.update(0.25)
+        
         pygame.display.flip()
         clock.tick(60)
                 
