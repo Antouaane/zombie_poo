@@ -149,8 +149,11 @@ class Zombie:
         distance_y = target_y - self.y
         distance = (distance_x**2 + distance_y**2)**0.5
         
+        if distance <= 40:
+            player.vie -= 0.5
+        
         if distance <  600:
-            if self.x <player.rect[0]:
+            if self.x < player.rect[0]:
                 self.x += self.vitesse
             if self.x > player.rect[0]:
                 self.x -= self.vitesse
@@ -180,6 +183,7 @@ class Zombie:
                 self.sprite_actuelle = 0
                 self.mouvement = False
             self.monstre_image = self.deplacement[int(self.sprite_actuelle)]
+            
 
 lst_zmb = [Zombie() for k in range(5)]
 
@@ -215,6 +219,11 @@ def main_jeux():
                 
 
         screen.blit(BG, position_BG)
+        
+        if player.vie == 0:
+            sys.exit()
+            pygame.quit()
+            
         for zmb in lst_zmb:
             zmb.affichage()
             zmb.barre_vie()
