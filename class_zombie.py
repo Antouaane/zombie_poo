@@ -64,17 +64,16 @@ class Player:
     def barre_vie(self):
         couleur_barre_vie = (111, 210, 46)
         couleur_fond_barre = (0, 0, 0)
+        if self.vie <= 25 and self.vie > 10:
+            couleur_barre_vie = (252, 126, 0)
+        elif self.vie <= 10:
+            couleur_barre_vie = (255, 0, 0)
         
         barre_position = [self.rect[0] + 10, self.rect[1] - 10, self.vie, 6]
         barre_position_fond = [self.rect[0] + 10, self.rect[1] - 10, self.max_vie, 6]
         
         pygame.draw.rect(screen, couleur_fond_barre, barre_position_fond)
         pygame.draw.rect(screen, couleur_barre_vie, barre_position)
-   
-                
-                
-                
-    
 
     def update(self, speed):
         if self.moving_high == True:
@@ -220,7 +219,7 @@ def main_jeux():
 
         screen.blit(BG, position_BG)
         
-        if player.vie == 0:
+        if player.vie <= 0:
             sys.exit()
             pygame.quit()
             
